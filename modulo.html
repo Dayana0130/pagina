@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona la Tabla</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .tabla-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .tabla {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            width: 150px;
+        }
+        .tabla h3 {
+            margin: 0 0 10px 0;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+        .resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Selecciona la Tabla que Pensó el Asistente</h1>
+    <div class="tabla-container" id="tablas">
+        <!-- Las tablas se generarán dinámicamente aquí -->
+    </div>
+    <button onclick="verificar()">Verificar</button>
+    <div class="resultado" id="resultado"></div>
+
+    <script>
+        // Generar un número aleatorio entre 1 y 5 (tabla que pensó el asistente)
+        const tablaPensada = Math.floor(Math.random() * 5) + 1;
+
+        // Generar las tablas de multiplicar
+        const contenedorTablas = document.getElementById("tablas");
+        for (let i = 1; i <= 5; i++) {
+            const tablaDiv = document.createElement("div");
+            tablaDiv.className = "tabla";
+
+            const titulo = document.createElement("h3");
+            titulo.textContent = `Tabla del ${i}`;
+            tablaDiv.appendChild(titulo);
+
+            const tabla = document.createElement("table");
+            for (let j = 1; j <= 10; j++) {
+                const fila = document.createElement("tr");
+                const celda = document.createElement("td");
+                celda.textContent = `${i} × ${j} = ${i * j}`;
+                fila.appendChild(celda);
+                tabla.appendChild(fila);
+            }
+            tablaDiv.appendChild(tabla);
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "radio";
+            checkbox.name = "tabla";
+            checkbox.value = i;
+            tablaDiv.appendChild(checkbox);
+
+            contenedorTablas.appendChild(tablaDiv);
+        }
+
+        // Verificar si la selección del usuario es correcta
+        function verificar() {
+            const seleccion = document.querySelector('input[name="tabla"]:checked');
+            const resultadoDiv = document.getElementById("resultado");
+
+            if (!seleccion) {
+                resultadoDiv.textContent = "Por favor, selecciona una tabla.";
+                return;
+            }
+
+            const tablaSeleccionada = parseInt(seleccion.value);
+            if (tablaSeleccionada === tablaPensada) {
+                resultadoDiv.textContent = `¡Correcto! El asistente pensó en la tabla del ${tablaPensada}.`;
+            } else {
+                resultadoDiv.textContent = `Incorrecto. El asistente pensó en la tabla del ${tablaPensada}.`;
+            }
+        }
+    </script>
+</body>
+</html>
